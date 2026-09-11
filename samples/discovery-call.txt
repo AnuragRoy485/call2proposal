@@ -1,0 +1,11 @@
+Maya (Northstar Studio): Thanks for making time. We're Northstar Studio, a 75-person product design and development agency serving companies in the US and UAE.
+
+Maya: The problem is proposals take two or three days after a good discovery call. By then a warm prospect is already talking to someone faster.
+
+Omar (Sales Lead): We want to get a strong first draft in front of the account owner within 30 minutes of the call ending. A human must review it before it leaves the company.
+
+Maya: We need this in the next 6 weeks. The initial users are our six account directors.
+
+Omar: Past proposals contain useful delivery language, but prices and timelines vary. We have not approved a budget for this project yet. Do not guess one in the proposal.
+
+Consultant: Understood. The first release will accept an exported transcript and past proposals, extract the deal facts with source quotes, draft the proposal, flag unsupported claims, and wait for approval before export. Email sending is not part of this release.

@@ -1,0 +1,10 @@
+Northstar Studio - Fictional Past Proposal A
+
+Delivery approach
+We begin with a focused discovery workshop and workflow map. The implementation is delivered in short checkpoints, followed by acceptance testing, handover notes and a recorded training session.
+
+Governance
+One client owner approves scope decisions. Any change that affects cost or timing is written down and approved before implementation.
+
+Commercials
+Fees are confirmed only after the final scope and dependencies are agreed. This template does not authorize a price for a new client.

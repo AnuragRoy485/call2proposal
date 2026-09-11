@@ -1,0 +1,7 @@
+Northstar Studio - Fictional Past Proposal B
+
+Success measures
+The workflow should reduce turnaround time while keeping a named human accountable for the final output. We track median turnaround time, approval rate, correction rate and failed runs.
+
+Safety
+Generated content is always treated as a draft. Unsupported claims are flagged, and the system never sends an external message without human approval.
