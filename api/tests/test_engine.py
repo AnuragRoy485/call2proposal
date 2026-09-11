@@ -16,3 +16,17 @@ def test_every_supported_fact_has_quote():
 def test_status_requires_review():
     result = generate(ProposalRequest(transcript=TRANSCRIPT, past_proposals=[PAST]))
     assert result.status == "needs_review"
+
+
+def test_explicit_budget_is_preserved_with_evidence():
+    transcript = TRANSCRIPT.replace("We have not approved a budget yet", "The approved budget is $24,000 USD")
+    result = generate(ProposalRequest(transcript=transcript, past_proposals=[PAST]))
+    budget = next(f for f in result.facts if f.field == "budget")
+    assert budget.value == "$24,000 USD"
+    assert budget.quote and "$24,000 USD" in budget.quote
+    assert not any(f.code == "missing_budget" for f in result.flags)
+
+def test_past_proposal_price_does_not_leak_into_current_draft():
+    priced_history = PAST + "\nA previous client paid $99,999 USD."
+    result = generate(ProposalRequest(transcript=TRANSCRIPT, past_proposals=[priced_history]))
+    assert "$99,999" not in result.proposal_markdown

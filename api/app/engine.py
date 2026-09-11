@@ -7,7 +7,7 @@ FIELD_RULES = {
     "pain": [r"(?:problem|challenge|bottleneck) (?:is|has been) ([^.]{12,180})"],
     "goal": [r"(?:need|want|goal is to|looking to) ([^.]{12,180})"],
     "timeline": [r"(?:by|within|in) ((?:the )?next \d+ (?:days|weeks|months)|Q[1-4]|[A-Z][a-z]+ \d{4})"],
-    "budget": [r"(?:budget|approved) (?:is|of|around)?\s*([$€£₹][\d,.]+(?:\s*(?:USD|EUR|GBP|INR))?)"],
+    "budget": [r"(?:budget|approved budget) (?:is|of|around)?\s*([$€£₹][\d,.]+(?:\s*(?:USD|EUR|GBP|INR))?)"],
 }
 
 def _sentences(text: str) -> list[str]:
