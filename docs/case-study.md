@@ -55,7 +55,15 @@ The first test suite covers:
 
 ## Architecture
 
-Next.js on the frontend and FastAPI/Pydantic on the backend. The current build uses a deterministic provider so the full workflow is testable without a paid key; a provider-neutral prompt contract documents the production LLM path. The hosted build should use a live provider only after an existing key is connected securely.
+Next.js on the frontend and FastAPI/Pydantic on the backend. The deployed demo runs a live Gemini 2.5 Flash provider behind the same deterministic evidence guard: extraction always carries verbatim quotes, and any draft amount without transcript evidence voids the model output. A deterministic provider remains the default for key-free local runs and as the automatic fallback.
+
+## Live deployment
+
+- App: https://call2proposal.vercel.app
+- API: https://call2proposal-api.vercel.app (`/health` discloses the active provider)
+- Source: https://github.com/AnuragRoy485/call2proposal
+- Both projects are Vercel deployments from one repo: the Next.js app from `web/`, and the FastAPI service as a Python serverless function from `backend/`. No database is required for the demo loop.
+- Measured on the live deployment: one end-to-end generation with the fictional samples returned a real Gemini draft in about 7 seconds, with the missing-budget blocker intact and no invented pricing.
 
 ## What I deliberately did not build
 

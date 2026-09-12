@@ -4,6 +4,12 @@ Turn a sales-call transcript into an evidence-backed proposal draft, grounded in
 
 Built for Crework's AI Engineer Intern buildathon, Option B.
 
+## Live demo
+
+- App: https://call2proposal.vercel.app
+- API: https://call2proposal-api.vercel.app (`/health` reports the active provider)
+- The hosted demo drafts with Gemini 2.5 Flash behind the deterministic evidence guard; the deterministic provider remains the default for local runs and the automatic fallback.
+
 ## Why this exists
 
 Sales-led SMEs lose momentum between a strong call and a proposal. Call2Proposal reduces the mechanical work without letting a model invent prices, dates, or promises.
