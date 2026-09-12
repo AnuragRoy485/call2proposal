@@ -20,7 +20,7 @@ Sales-led SMEs lose momentum between a strong call and a proposal. Call2Proposal
 ## Monorepo
 
 - `web/` - Next.js 15 frontend
-- `api/` - FastAPI backend
+- `backend/` - FastAPI backend (deploys as Vercel Python serverless functions)
 - `samples/` - fully fictional demonstration data
 - `docs/` - architecture, prompts, evaluation and case-study draft
 
@@ -28,7 +28,7 @@ Sales-led SMEs lose momentum between a strong call and a proposal. Call2Proposal
 
 ```bash
 # API
-cd api
+cd backend
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
@@ -49,6 +49,15 @@ The API defaults to a deterministic provider (`deterministic-demo-v1`) so the pr
 
 The live provider only ever polishes prose around already-extracted facts. Extraction and verification stay deterministic: every fact must carry a verbatim transcript quote, and any currency amount in a model draft that does not appear in the transcript voids the draft (the deterministic version is used and a blocker is raised). `/health` reports the active provider, so the deployed demo discloses exactly what powered it.
 
+## Deployment (Vercel)
+
+Two Vercel projects from this one repo:
+
+1. **Frontend** - root directory `web/`, framework Next.js. Set `NEXT_PUBLIC_API_URL` to the backend project's URL.
+2. **Backend** - root directory `backend/`. `backend/api/index.py` exposes the FastAPI app as a Python serverless function and `backend/vercel.json` routes all paths to it. Set `LLM_PROVIDER` / `LLM_API_KEY` (and optionally `LLM_MODEL`) in the project's environment variables; leave them unset for the deterministic demo provider.
+
+CORS on the API is open (no credentials are used), so the two projects can live on their default `*.vercel.app` URLs.
+
 ## Safety contract
 
 - Pricing is copied only when explicitly stated in the transcript. Otherwise the draft says `To be confirmed`.
@@ -60,5 +69,5 @@ The live provider only ever polishes prose around already-extracted facts. Extra
 ## Tests
 
 ```bash
-cd api && pytest
+cd backend && pytest
 ```

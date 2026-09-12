@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: call2proposal-api
-    runtime: docker
-    dockerfilePath: ./Dockerfile
-    healthCheckPath: /health
-    autoDeploy: true
