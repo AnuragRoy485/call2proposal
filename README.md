@@ -39,7 +39,15 @@ npm install
 NEXT_PUBLIC_API_URL=http://localhost:8000 npm run dev
 ```
 
-The API defaults to `DEMO_MODE=true`, a deterministic provider that makes the project runnable without a paid API. A real provider can be added behind `ProposalProvider` without changing the workflow contract. The submission must disclose which provider actually powered the deployed demo.
+The API defaults to a deterministic provider (`deterministic-demo-v1`) so the project runs without any API key. A live model is configured entirely through environment variables, with no code change:
+
+| Variable | Purpose |
+| --- | --- |
+| `LLM_PROVIDER` | `openai`, `anthropic` or `gemini` (unset = deterministic demo) |
+| `LLM_API_KEY` | API key for the chosen provider |
+| `LLM_MODEL` | Optional model override (defaults: `gpt-4o-mini`, `claude-haiku-4-5`, `gemini-2.0-flash`) |
+
+The live provider only ever polishes prose around already-extracted facts. Extraction and verification stay deterministic: every fact must carry a verbatim transcript quote, and any currency amount in a model draft that does not appear in the transcript voids the draft (the deterministic version is used and a blocker is raised). `/health` reports the active provider, so the deployed demo discloses exactly what powered it.
 
 ## Safety contract
 

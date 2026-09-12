@@ -6,13 +6,18 @@ from docx import Document
 from fastapi.middleware.cors import CORSMiddleware
 from .models import ProposalRequest, ProposalResponse, ExportRequest
 from .engine import generate
+from .providers import get_provider
 
 app = FastAPI(title="Call2Proposal API", version="0.1.0")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["GET", "POST"], allow_headers=["*"])
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "provider": "deterministic-demo-v1"}
+    try:
+        provider = get_provider()
+    except RuntimeError as exc:
+        return {"status": "misconfigured", "error": str(exc)}
+    return {"status": "ok", "provider": provider.name}
 
 @app.post("/v1/proposals", response_model=ProposalResponse)
 def create_proposal(request: ProposalRequest):
