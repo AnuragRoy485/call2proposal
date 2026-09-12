@@ -30,3 +30,10 @@ def test_past_proposal_price_does_not_leak_into_current_draft():
     priced_history = PAST + "\nA previous client paid $99,999 USD."
     result = generate(ProposalRequest(transcript=TRANSCRIPT, past_proposals=[priced_history]))
     assert "$99,999" not in result.proposal_markdown
+
+def test_conflicting_timeline_is_blocked():
+    transcript = TRANSCRIPT + " Later: We need it in the next 9 weeks."
+    result = generate(ProposalRequest(transcript=transcript, past_proposals=[PAST]))
+    timeline = next(f for f in result.facts if f.field == "timeline")
+    assert timeline.status == "conflict"
+    assert any(f.code == "conflicting_timeline" and f.severity == "blocker" for f in result.flags)

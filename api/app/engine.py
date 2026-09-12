@@ -16,16 +16,21 @@ def _sentences(text: str) -> list[str]:
 def _extract(transcript: str) -> list[Evidence]:
     facts: list[Evidence] = []
     for field, patterns in FIELD_RULES.items():
-        found = None
+        matches: list[tuple[str, str]] = []
         for sentence in _sentences(transcript):
             for pattern in patterns:
                 match = re.search(pattern, sentence, re.I)
                 if match:
-                    found = Evidence(field=field, value=match.group(1).strip(), quote=sentence, status="supported")
-                    break
-            if found:
-                break
-        facts.append(found or Evidence(field=field, status="unknown"))
+                    pair = (match.group(1).strip(), sentence)
+                    if pair[0].lower() not in {v.lower() for v, _ in matches}:
+                        matches.append(pair)
+        if len(matches) > 1:
+            facts.append(Evidence(field=field, value=" | ".join(v for v, _ in matches), quote=" || ".join(q for _, q in matches), status="conflict"))
+        elif matches:
+            value, quote = matches[0]
+            facts.append(Evidence(field=field, value=value, quote=quote, status="supported"))
+        else:
+            facts.append(Evidence(field=field, status="unknown"))
     return facts
 
 def _keywords(text: str) -> set[str]:
@@ -87,6 +92,8 @@ Review the evidence panel, correct any missing details, and approve this draft b
         if fact.status == "unknown":
             severity = "blocker" if fact.field == "budget" else "warning"
             flags.append(VerificationFlag(severity=severity, code=f"missing_{fact.field}", message=f"{fact.field.title()} was not found in the transcript. Kept as an explicit unknown.", section="Commercials" if fact.field == "budget" else "Draft"))
+        elif fact.status == "conflict":
+            flags.append(VerificationFlag(severity="blocker", code=f"conflicting_{fact.field}", message=f"Conflicting {fact.field} values were found. A reviewer must choose the correct one.", section="Commercials" if fact.field == "budget" else "Draft"))
     return ProposalResponse(
         run_id=sha256((request.transcript + "||".join(request.past_proposals)).encode()).hexdigest()[:12],
         facts=facts,

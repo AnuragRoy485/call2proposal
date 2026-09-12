@@ -25,3 +25,8 @@ class ProposalResponse(BaseModel):
     proposal_markdown: str
     flags: list[VerificationFlag]
     provider: str
+
+class ExportRequest(BaseModel):
+    proposal_markdown: str = Field(min_length=40, max_length=50000)
+    approved: bool = False
+    run_id: str = Field(pattern=r"^[a-zA-Z0-9_-]{6,64}$")
