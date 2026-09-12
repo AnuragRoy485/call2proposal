@@ -143,8 +143,9 @@ def generate(request: ProposalRequest, provider: DraftProvider | None = None) ->
         provider_name = provider.name
         try:
             llm_draft = provider.draft(_draft_prompt(facts, examples))
-        except Exception:
-            flags.append(VerificationFlag(severity="warning", code="llm_unavailable", message="The configured model call failed, so the deterministic draft was used instead.", section="Draft"))
+        except Exception as exc:
+            detail = f"{type(exc).__name__}: {str(exc)[:200]}"
+            flags.append(VerificationFlag(severity="warning", code="llm_unavailable", message=f"The configured model call failed ({detail}), so the deterministic draft was used instead.", section="Draft"))
             provider_name = f"{provider.name}-fallback-deterministic"
         else:
             bad_amounts = _unverified_amounts(llm_draft, request.transcript)
