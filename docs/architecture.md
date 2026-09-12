@@ -29,3 +29,7 @@ The boundary is deliberate and enforced:
 - Past proposals supply reusable language, never authority for a new price.
 - Retrieval operates on sections rather than sending the whole archive.
 - No CRM, auth, billing or email integration in the first build.
+
+## Persistence decision (Supabase)
+
+The vertical slice intentionally ships without a database. A proposal run is a single session: generate, review, edit, approve, export. Nothing in that loop requires server-side recall, and the evidence model means re-running the same inputs reproduces the same output. Adding Supabase Postgres becomes worth it the moment any of these land: a run-history view across sessions, multi-user review states, or an audit trail of approvals. The schema is straightforward when needed (`runs(id, created_at, request_json, response_json, approved_by, approved_at)`), and the README's deployment section notes it as the first post-demo step. The paused `hostiqo` Supabase project was explicitly not reused: it belongs to a different effort and the user decided to let it lapse.
