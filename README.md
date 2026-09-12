@@ -45,7 +45,7 @@ The API defaults to a deterministic provider (`deterministic-demo-v1`) so the pr
 | --- | --- |
 | `LLM_PROVIDER` | `openai`, `anthropic` or `gemini` (unset = deterministic demo) |
 | `LLM_API_KEY` | API key for the chosen provider |
-| `LLM_MODEL` | Optional model override (defaults: `gpt-4o-mini`, `claude-haiku-4-5`, `gemini-2.0-flash`) |
+| `LLM_MODEL` | Optional model override (defaults: `gpt-4o-mini`, `claude-haiku-4-5`, `gemini-2.5-flash`) |
 
 The live provider only ever polishes prose around already-extracted facts. Extraction and verification stay deterministic: every fact must carry a verbatim transcript quote, and any currency amount in a model draft that does not appear in the transcript voids the draft (the deterministic version is used and a blocker is raised). `/health` reports the active provider, so the deployed demo discloses exactly what powered it.
 
